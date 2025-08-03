@@ -3,15 +3,37 @@ import { Canvas, useLoader } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import mainStore from "../store/main";
+import LightingSelector from "./LightingSelector";
 
 const TileRoom = () => {
-  const { selectedWallTile, selectedFloorTile } = mainStore();
+  const { selectedWallTile, selectedFloorTile, lighting } = mainStore();
 
   const wallTexture = useLoader(THREE.TextureLoader, selectedWallTile);
   const floorTexture = useLoader(THREE.TextureLoader, selectedFloorTile);
 
   const rows = 2; // Number of tiles vertically
   const cols = 2; // Number of tiles horizontally
+
+  const lightingPresets = {
+    studio: {
+      ambient: 0.4,
+      directional: { intensity: 1.2, position: [10, 20, 10], color: 0xffffff },
+    },
+    daylight: {
+      ambient: 0.3,
+      directional: { intensity: 1.5, position: [50, 100, 0], color: 0xfff2cc },
+    },
+    night: {
+      ambient: 0.1,
+      directional: { intensity: 0.5, position: [-10, 5, -10], color: 0x445566 },
+    },
+    ambientOnly: {
+      ambient: 0.7,
+      directional: { intensity: 0 },
+    },
+  };
+
+  const preset = lightingPresets[lighting] || lightingPresets.studio;
 
   // ⬅ Wall Texture Setup
   useEffect(() => {
@@ -51,16 +73,21 @@ const TileRoom = () => {
 
   return (
     <div style={{ width: "100vw", height: "100vh", backgroundColor: "black" }}>
+      <LightingSelector />
       <Canvas shadows camera={{ position: [0, 100, 320], fov: 50 }}>
         {/* Lights */}
-        <ambientLight intensity={0.3} />
-        <directionalLight
-          position={[10, 20, 10]}
-          intensity={1.2}
-          castShadow
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-        />
+        <ambientLight intensity={preset.ambient} />
+
+        {preset.directional.intensity > 0 && (
+          <directionalLight
+            position={preset.directional.position}
+            intensity={preset.directional.intensity}
+            color={preset.directional.color}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
+        )}
 
         {/* Environment lighting */}
         <Environment preset="warehouse" />
