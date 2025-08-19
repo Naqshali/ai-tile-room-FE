@@ -11,8 +11,8 @@ const TileRoom = () => {
   const wallTexture = useLoader(THREE.TextureLoader, selectedWallTile);
   const floorTexture = useLoader(THREE.TextureLoader, selectedFloorTile);
 
-  const rows = 2; // Number of tiles vertically
-  const cols = 2; // Number of tiles horizontally
+  const rows = 1; // Number of tiles vertically
+  const cols = 1; // Number of tiles horizontally
 
   const lightingPresets = {
     studio: {
