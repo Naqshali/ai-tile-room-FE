@@ -11,6 +11,7 @@ export const Floor: React.FC<FloorProps> = ({
   groutW,
   groutColor,
   texturePath,
+  pattern,
 }) => {
   const mat = useGroutedMaterial({
     tileW,
@@ -18,6 +19,7 @@ export const Floor: React.FC<FloorProps> = ({
     groutW,
     groutColor,
     texturePath,
+    pattern,
   });
   const meshRef = useRef<THREE.Mesh>(null!);
 
@@ -28,7 +30,6 @@ export const Floor: React.FC<FloorProps> = ({
   return (
     <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[roomW, roomD, 1, 1]} />
-      {/* Use primitive to mount the custom material */}
       <primitive object={mat as any} attach="material" />
     </mesh>
   );

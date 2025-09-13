@@ -1,5 +1,6 @@
 import React from "react";
 import { NumberInput } from "./NumberInput";
+import type { PatternKind } from "./types";
 
 interface Props {
   roomW: number;
@@ -16,6 +17,8 @@ interface Props {
   setGroutW: (v: number) => void;
   groutColor: string;
   setGroutColor: (v: string) => void;
+  pattern: PatternKind;
+  setPattern: (p: PatternKind) => void;
 }
 
 const Label: React.FC<React.PropsWithChildren> = ({ children }) => (
@@ -50,6 +53,21 @@ export const Controls: React.FC<Props> = (p) => (
         step={0.01}
         min={0.05}
       />
+    </div>
+
+    <h2 className="text-xl font-semibold">Pattern</h2>
+    <div className="grid grid-cols-2 gap-3">
+      <Label>Type</Label>
+      <select
+        value={p.pattern}
+        onChange={(e) => p.setPattern(e.target.value as PatternKind)}
+        className="rounded-md border p-2 bg-white"
+      >
+        <option value="grid">Grid</option>
+        <option value="brick50">Brick 50%</option>
+        <option value="brick33">Brick 33%</option>
+        <option value="diagonal45">Diagonal 45°</option>
+      </select>
     </div>
 
     <h2 className="text-xl font-semibold">Grout</h2>
