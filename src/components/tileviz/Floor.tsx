@@ -20,6 +20,7 @@ export const Floor: React.FC<FloorProps> = ({
     groutColor,
     texturePath,
     pattern,
+    plane: "xz",
   });
   const meshRef = useRef<THREE.Mesh>(null!);
 
